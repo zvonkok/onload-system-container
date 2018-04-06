@@ -2,13 +2,3 @@
 - name: bugfix install git
   yum:
     name: git
-
-- name: get stac-n-tools
-  git:
-    repo: "https://{{ github_token }}@github.com/zvonkok/stac-n-tools.git"
-    dest: /root/stac-n-tools
-
-- name: get stac-n-harness
-  git:
-    repo: "https://{{ github_token }}@github.com/zvonkok/stac-n-harness.git"
-    dest: /root/stac-n-harness

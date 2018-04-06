@@ -12,7 +12,7 @@ settings:
 
   # Set the name of the project. Defaults to basename of the project directory.
   # For built services, concatenated with service name to form the built image name.
-  project_name: stac-n
+  project_name: solarflare
 
   # The deployment_output_path is mounted to the Conductor container, and the
   # `run` and `deployment` commands then write generated Ansible playbooks to it.
@@ -48,7 +48,7 @@ settings:
   #  display_name:
 
 services:
-  tools-harness:
+  system-container:
     from: centos:7
     roles:
       - populate_container
@@ -57,7 +57,7 @@ services:
 registries:
   quay:
     url: quay.io
-    namespace: zvonkok 
+    namespace: zvonkok
   # Add optional registries used for deployment. For example:
   #  google:
   #    url: https://gcr.io
