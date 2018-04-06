@@ -1,4 +1,57 @@
 ---
-- name: bugfix install git
+- name: prepare for building rpms
   yum:
-    name: git
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - rpm-build
+    - redhat-rpm-config
+
+
+- name: create rpmbuild dir structure
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /root/rpmbuild/BUILD
+    - /root/rpmbuild/RPMS
+    - /root/rpmbuild/SOURCES
+    - /root/rpmbuild/SPECS
+    - /root/rpmbuild/SRPMS
+
+- name: create rpmmacros
+  shell: echo '%_topdir %(echo $HOME)/rpmbuild' > /root/.rpmmacros
+  args:
+    creates: /root/rpmmacros
+
+- name: get openonload-201710-u1.tgz
+  get_url:
+    url: http://www.openonload.org/download/openonload-201710-u1.tgz
+    dest: /root/rpmbuild/SOURCES/openonload-201710-u1.tgz
+
+- name: get sfnettest
+  get_url:
+    url: http://www.openonload.org/download/sfnettest/sfnettest-20131029.tgz
+    dest: /root/rpmbuild/SOURCES/sfnettest-20131029.tgz
+
+
+- name: create srpm of openonload
+  shell: rpmbuild -ts /root/rpmbuild/SOURCES/openonload-201710-u1.tgz
+  args:
+    creates: /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
+
+
+- name: install dependencies prior to building
+  shell: yum-builddep -y /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
+
+- name: install kernel-devel
+  yum:
+    name: kernel-devel
+
+
+- name: create rpm of openonload
+  shell: rpmbuild --rebuild  /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
+  args:
+    creates:
+      - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
+      - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
