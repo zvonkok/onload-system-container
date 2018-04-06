@@ -40,18 +40,22 @@
   args:
     creates: /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
 
-
 - name: install dependencies prior to building
   shell: yum-builddep -y /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
 
-- name: install kernel-devel
+- name: get the correct kernel-devel version from running kernel
+  shell: echo kernel-devel-`uname -r`
+  register: kernel_version
+
+- name: try to install the same kernel-devel version as running kernel
   yum:
-    name: kernel-devel
+    name: "{{ kernel_version.stdout }}"
 
 
-- name: create rpm of openonload
-  shell: rpmbuild --rebuild  /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
-  args:
-    creates:
-      - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
-      - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
+#- name: create rpm of openonload
+#  shell: rpmbuild --rebuild  /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
+#  args:
+#    creates:
+#      - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
+#      - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
+#
