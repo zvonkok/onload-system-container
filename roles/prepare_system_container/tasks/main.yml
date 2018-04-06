@@ -1,0 +1,49 @@
+---
+- name: get the correct kernel version from running kernel
+  shell: echo `uname -r`
+  register: kernel_version
+
+- name: check for existing directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /exports/hostfs/etc/modprobe.d
+    - /exports/hostfs/etc/ld.so.conf.d
+    - /exports/hostfs/usr/libexec/oci/hooks.d
+    - /exports/hostfs/etc/containers/oci/hooks.d
+    - /exports/hostfs/etc/profile.d
+    - /exports/hostfs/opt/solarflare/lib
+    - /exports/hostfs/opt/solarflare/bin
+    - /exports/hostfs/opt/solarflare/lib/modules/{{ kernel_version.stdout }}/extra
+
+- name: exports/config.json.template
+  lineinfile:
+    path: /exports/config.json.template
+    line: '{"process" : {"args" : []}, "root" : {"path" : "rootfs", "readonly" : true} }'
+    create: yes
+
+- name: exports/hostfs/etc/ld.so.conf.d/solarflare.conf
+  lineinfile:
+    path: /exports/hostfs/etc/ld.so.conf.d/solarflare.conf
+    line: '/opt/solarflare/lib'
+    create: yes
+
+- name: exports/manifest.json
+  blockinfile:
+    path: /exports/manifest.json
+    block: |
+       {
+          "noContainerService" : true
+       }
+    create: yes
+
+- name: exports/hostfs/etc/containers/oci/hooks.d/oci-decorator.json
+  blockinfile:
+    path: /exports/hostfs/etc/containers/oci/hooks.d/oci-decorator.json
+    block: |
+      {
+          "hook": "/usr/bin/oci-decorator",
+          "stage": [ "prestart" ]
+      }
+    create: yes
