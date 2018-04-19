@@ -26,50 +26,52 @@
   args:
     creates: /root/rpmmacros
 
-- name: get openonload-201710-u1.tgz
-  get_url:
-    url: http://www.openonload.org/download/openonload-201710-u1.tgz
-    dest: /root/rpmbuild/SOURCES/openonload-201710-u1.tgz
 
-- name: get sfnettest
-  get_url:
-    url: http://www.openonload.org/download/sfnettest/sfnettest-20131029.tgz
-    dest: /root/rpmbuild/SOURCES/sfnettest-20131029.tgz
-
-- name: get sysjitter
-  get_url:
-    url: http://www.openonload.org/download/sysjitter/sysjitter-1.4.tgz
-    dest: /root/rpmbuild/SOURCES/sysjitter-1.4.tgz
+# - name: get openonload-201710-u1.tgz
+#   get_url:
+#     url: http://www.openonload.org/download/openonload-201710-u1.tgz
+#     dest: /root/rpmbuild/SOURCES/openonload-201710-u1.tgz
 
 
+# - name: get sfnettest
+#   get_url:
+#     url: http://www.openonload.org/download/sfnettest/sfnettest-20131029.tgz
+#     dest: /root/rpmbuild/SOURCES/sfnettest-20131029.tgz
 
-- name: create srpm of openonload
-  shell: rpmbuild -ts /root/rpmbuild/SOURCES/openonload-201710-u1.tgz
-  args:
-    creates: /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
+# - name: get sysjitter
+#   get_url:
+#     url: http://www.openonload.org/download/sysjitter/sysjitter-1.4.tgz
+#     dest: /root/rpmbuild/SOURCES/sysjitter-1.4.tgz
 
-- name: install dependencies prior to building
-  shell: yum-builddep -y /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
 
-- name: get the correct kernel-devel version from running kernel
-  shell: echo kernel-devel-`uname -r`
-  register: kernel_version
 
-- name: try to install the same kernel-devel version as running kernel
-  yum:
-    name: "{{ kernel_version.stdout }}"
+# - name: create srpm of openonload
+#   shell: rpmbuild -ts /root/rpmbuild/SOURCES/openonload-201710-u1.tgz
+#   args:
+#     creates: /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
 
-- name: create rpm of openonload
-  shell: rpmbuild --rebuild  /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm > /tmp/rpm.log 2>&1
-  args:
-    creates:
-      - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
-      - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
-  ignore_errors: True
+# - name: install dependencies prior to building
+#   shell: yum-builddep -y /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
 
-- name: populate kernel drivers
-  shell: rpm2cpio /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm | cpio -itv
-  args:
-      chdir: /exports/hostfs/opt/solarflare
-      creates: /exports/hostfs/opt/solarflare/lib/modules/3.10.0-693.el7.x86_64/extra/sfc.ko
-  ignore_errors: True
+# - name: get the correct kernel-devel version from running kernel
+#   shell: echo kernel-devel-`uname -r`
+#   register: kernel_version
+
+# - name: try to install the same kernel-devel version as running kernel
+#   yum:
+#     name: "{{ kernel_version.stdout }}"
+
+# - name: create rpm of openonload
+#   shell: rpmbuild --rebuild  /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm > /tmp/rpm.log 2>&1
+#   args:
+#     creates:
+#       - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
+#       - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
+#   ignore_errors: True
+
+# - name: populate kernel drivers
+#   shell: rpm2cpio /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm | cpio -itv
+#   args:
+#       chdir: /exports/hostfs/opt/solarflare
+#       creates: /exports/hostfs/opt/solarflare/lib/modules/3.10.0-693.el7.x86_64/extra/sfc.ko
+#   ignore_errors: True
