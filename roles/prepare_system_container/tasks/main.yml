@@ -1,7 +1,7 @@
 ---
-- name: get the correct kernel version from running kernel
-  shell: echo `uname -r`
-  register: kernel_version
+# - name: get the correct kernel version from running kernel
+#   shell: echo `uname -r`
+#   register: kernel_version
 
 - name: check for existing directories
   file:
@@ -15,7 +15,7 @@
     - /exports/hostfs/etc/profile.d
     - /exports/hostfs/opt/solarflare/lib
     - /exports/hostfs/opt/solarflare/bin
-    - /exports/hostfs/opt/solarflare/lib/modules/{{ kernel_version.stdout }}/extra
+#    - /exports/hostfs/opt/solarflare/lib/modules/{{ kernel_version.stdout }}/extra
 
 - name: exports/config.json.template
   lineinfile:
