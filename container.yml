@@ -55,12 +55,7 @@ services:
       - prepare_system_container
       - populate_container
 
-
 registries:
   quay:
     url: quay.io
     namespace: zvonkok
-  # Add optional registries used for deployment. For example:
-  #  google:
-  #    url: https://gcr.io
-  #    namespace: my-cool-project-xxxxxx

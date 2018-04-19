@@ -6,6 +6,9 @@
   with_items:
     - rpm-build
     - redhat-rpm-config
+    - wget
+    - yum-utils
+    - which
 
 - name: create rpmbuild dir structure
   file:
@@ -33,6 +36,13 @@
     url: http://www.openonload.org/download/sfnettest/sfnettest-20131029.tgz
     dest: /root/rpmbuild/SOURCES/sfnettest-20131029.tgz
 
+- name: get sysjitter
+  get_url:
+    url: http://www.openonload.org/download/sysjitter/sysjitter-1.4.tgz
+    dest: /root/rpmbuild/SOURCES/sysjitter-1.4.tgz
+
+
+
 - name: create srpm of openonload
   shell: rpmbuild -ts /root/rpmbuild/SOURCES/openonload-201710-u1.tgz
   args:
@@ -40,11 +50,6 @@
 
 - name: install dependencies prior to building
   shell: yum-builddep -y /root/rpmbuild/SRPMS/openonload-201710_u1-1.el7.centos.src.rpm
-
-- name: install additional dependencies not covered by spec
-  yum:
-    name: which
-    state: present
 
 - name: get the correct kernel-devel version from running kernel
   shell: echo kernel-devel-`uname -r`
