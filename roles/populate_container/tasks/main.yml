@@ -1,5 +1,5 @@
 ---
-- name: bugfix: install git
+- name: bugfix install git
   yum:
     name: git
 
