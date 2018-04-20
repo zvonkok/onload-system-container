@@ -1,5 +1,6 @@
 ---
-- yum:
+- name: bugfix: install git
+  yum:
     name: git
 
 - name: get svt repo
@@ -54,9 +55,9 @@
   shell: echo kernel-devel-`uname -r`
   register: kernel_version
 
-#- name: try to install the same kernel-devel version as running kernel
-#  yum:
-#    name: "{{ kernel_version.stdout }}"
+- name: try to install the same kernel-devel version as running kernel
+  yum:
+    name: "{{ kernel_version.stdout }}"
 #
 #- name: create rpm of openonload
 #  shell: rpmbuild --rebuild "{{ rpmbuild_srpms }}/{{ onload_srpm }}"  > /tmp/rpm.log 2>&1
