@@ -54,17 +54,17 @@
   shell: echo kernel-devel-`uname -r`
   register: kernel_version
 
-- name: try to install the same kernel-devel version as running kernel
-  yum:
-    name: "{{ kernel_version.stdout }}"
-
-- name: create rpm of openonload
-  shell: rpmbuild --rebuild "{{ rpmbuild_srpms }}/{{ onload_srpm }}"  > /tmp/rpm.log 2>&1
+#- name: try to install the same kernel-devel version as running kernel
+#  yum:
+#    name: "{{ kernel_version.stdout }}"
+#
+#- name: create rpm of openonload
+#  shell: rpmbuild --rebuild "{{ rpmbuild_srpms }}/{{ onload_srpm }}"  > /tmp/rpm.log 2>&1
 #  args:
 #    creates:
 #       - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
 #       - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
-  ignore_errors: True
+#  ignore_errors: True
 
 # - name: populate kernel drivers
 #   shell: rpm2cpio /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm | cpio -itv
