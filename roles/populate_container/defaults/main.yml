@@ -1,0 +1,28 @@
+---
+svt_repo:       github.com/zvonkok/svt-private.git
+onload_version: openonload-20180328.tgz
+sfutils_rpm:    sfutils-7.1.0.1003-1.x86_64.rpm
+
+onload_srpm: openonload-20180328-1.el7.centos.src.rpm
+
+solarflare_pkg_prefix: /root/svt-private/networking/synthetic/solarflare/pkg
+
+onload_url:        http://www.openonload.org/download
+sfnettest_version: sfnettest-20131029.tgz
+sysjitter_version: sysjitter-1.4.tgz
+
+rpms_to_install:
+  - rpm-build
+  - redhat-rpm-config
+  - yum-utils
+  - which
+
+rpmbuild_sources: /root/rpmbuild/SOURCES
+rpmbuild_srpms:   /root/rpmbuild/SRPMS
+
+rpmbuild_directories:
+    - /root/rpmbuild/BUILD
+    - /root/rpmbuild/RPMS
+    - /root/rpmbuild/SOURCES
+    - /root/rpmbuild/SPECS
+    - /root/rpmbuild/SRPMS
