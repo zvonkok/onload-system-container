@@ -22,7 +22,7 @@
     path: "{{ item }}"
     state: directory
   with_items:
-#    "{{ rpmbuild_directories }}"
+    "{{ rpmbuild_directories }}"
 
 - name: create rpmmacros
   shell: echo '%_topdir %(echo $HOME)/rpmbuild' > /root/.rpmmacros
