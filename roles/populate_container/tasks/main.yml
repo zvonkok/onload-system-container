@@ -62,9 +62,9 @@
   yum:
     name: "{{ kernel_version.stdout }}"
 
-#- name: create rpm of openonload
-#  shell: rpmbuild -ba "{{ rpmbuild_specs }}/{{ onload_spec }}" > /tmp/rpm.log 2>&1
-#  ignore_errors: true
+- name: create rpm of openonload
+  shell: rpmbuild -ba "{{ rpmbuild_specs }}/{{ onload_spec }}" > /tmp/rpm.log 2>&1
+  ignore_errors: true
 
 #- name: create rpm of openonload
 #  shell: rpmbuild --rebuild "{{ rpmbuild_srpms }}/{{ onload_srpm }}"  > /tmp/rpm.log 2>&1
