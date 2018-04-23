@@ -13,9 +13,8 @@
     - /exports/hostfs/usr/libexec/oci/hooks.d
     - /exports/hostfs/etc/containers/oci/hooks.d
     - /exports/hostfs/etc/profile.d
-    - /exports/hostfs/opt/solarflare/lib
-    - /exports/hostfs/opt/solarflare/bin
-#    - /exports/hostfs/opt/solarflare/lib/modules/{{ kernel_version.stdout }}/extra
+    - /exports/hostfs/opt/solarflare
+
 
 - name: exports/config.json.template
   lineinfile:
@@ -26,7 +25,7 @@
 - name: exports/hostfs/etc/ld.so.conf.d/solarflare.conf
   lineinfile:
     path: /exports/hostfs/etc/ld.so.conf.d/solarflare.conf
-    line: '/opt/solarflare/lib'
+    line: '/opt/solarflare/usr/lib64'
     create: yes
 
 - name: exports/manifest.json

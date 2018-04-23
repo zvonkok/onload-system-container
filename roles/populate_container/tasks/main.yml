@@ -51,6 +51,10 @@
 - name: install dependencies prior to building
   shell: yum-builddep -y "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
 
+- name: install the srpm of openonlaod
+  yum:
+    name: "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
+
 - name: get the correct kernel-devel version from running kernel
   shell: echo kernel-devel-`uname -r`
   register: kernel_version
@@ -58,7 +62,11 @@
 - name: try to install the same kernel-devel version as running kernel
   yum:
     name: "{{ kernel_version.stdout }}"
-#
+
+- name: create rpm of openonload
+  shell: rpmbuild -ba "{{ rpmbuild_specs }}/{{ onload_spec }}" > /tmp/rpm.log 2>&1
+  ignore_errors: true
+
 #- name: create rpm of openonload
 #  shell: rpmbuild --rebuild "{{ rpmbuild_srpms }}/{{ onload_srpm }}"  > /tmp/rpm.log 2>&1
 #  args:
@@ -68,7 +76,7 @@
 #  ignore_errors: True
 
 # - name: populate kernel drivers
-#   shell: rpm2cpio /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm | cpio -itv
+#   shell: rpm2cpio /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm | cpio -idmv
 #   args:
 #       chdir: /exports/hostfs/opt/solarflare
 #       creates: /exports/hostfs/opt/solarflare/lib/modules/3.10.0-693.el7.x86_64/extra/sfc.ko

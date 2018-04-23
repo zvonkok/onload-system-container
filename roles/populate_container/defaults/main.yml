@@ -3,7 +3,11 @@ svt_repo:       github.com/zvonkok/svt-private.git
 onload_version: openonload-20180328.tgz
 sfutils_rpm:    sfutils-7.1.0.1003-1.x86_64.rpm
 
-onload_srpm: openonload-20180328-1.el7.centos.src.rpm
+onload_srpm: openonload-20180328-1.el7.src.rpm
+onload_spec: openonload.spec
+onload_rpms:
+       - openonload-20180328-1.el7.x86_64.rpm
+       - openonload-kmod-3.10.0-862.el7.x86_64-20180328-1.el7.x86_64.rpm
 
 solarflare_pkg_prefix: /root/svt-private/networking/synthetic/solarflare/pkg
 
@@ -16,9 +20,20 @@ rpms_to_install:
   - redhat-rpm-config
   - yum-utils
   - which
+  - gcc
+  - rpm-devel
+  - rpmlint
+  - make
+  - python
+  - bash
+  - coreutils
+  - diffutils
+  - patch
+  - rpmdevtools
 
 rpmbuild_sources: /root/rpmbuild/SOURCES
 rpmbuild_srpms:   /root/rpmbuild/SRPMS
+rpmbuild_specs:   /root/rpmbuild/SPECS
 
 rpmbuild_directories:
     - /root/rpmbuild/BUILD

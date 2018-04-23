@@ -10,7 +10,7 @@
     dest: /var/lib/yum/client-cert.pem
 - copy:
     src: /var/lib/yum/client-key.pem
-    dest: /var/lib/yum/client-cert.pem
+    dest: /var/lib/yum/client-key.pem
 
 - name: remove CentOs repo because of centos conductor image
   shell: yum clean all; rm /etc/yum.repos.d/CentOS*; ls -l /etc/yum.repos.d/;
