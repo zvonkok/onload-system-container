@@ -2,7 +2,7 @@
 - name: debug
   shell: gcc --version > /tmp/gcc.version
 
-#- name: bugfix install git
+- name: bugfix install git
   yum:
     name: git
 
