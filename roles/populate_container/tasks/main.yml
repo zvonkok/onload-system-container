@@ -1,77 +1,73 @@
 ---
-- name: bugfix install git
-  yum:
-    name: git
+- name: debug
+  shell: gcc --version > /tmp/gcc.version
 
-- name: get svt repo
-  git:
-    repo: https://{{ github_token }}@{{ svt_repo }}
-    dest: /root/svt-private
-
-- name: prepare for building rpms
-  yum:
-    name: "{{ item }}"
-  with_items:
-    "{{ rpms_to_install }}"
-
-- name: create rpmbuild dir structure
-  file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    "{{ rpmbuild_directories }}"
-
-- name: create rpmmacros
-  shell: echo '%_topdir %(echo $HOME)/rpmbuild' > /root/.rpmmacros
-  args:
-    creates: /root/rpmmacros
-
-- name: get sfnettest
-  get_url:
-    url:  "{{ onload_url }}/sfnettest/{{ sfnettest_version }}"
-    dest: "{{ rpmbuild_sources }}/{{ sfnettest_version }}"
-
-- name: get sysjitter
-  get_url:
-    url: "{{ onload_url }}/sysjitter/{{ sysjitter_version }}"
-    dest: "{{ rpmbuild_sources }}/{{ sysjitter_version }}"
-
-- name: get openonload
-  copy:
-    remote_src: true
-    src:  "{{ solarflare_pkg_prefix }}/{{ onload_version }}"
-    dest: "{{ rpmbuild_sources }}/{{ onload_version }}"
-
-
-- name: create srpm of openonload
-  shell: rpmbuild -ts "{{ rpmbuild_sources }}/{{ onload_version }}"
-  args:
-     creates: "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
-
-- name: install dependencies prior to building
-  shell: yum-builddep -y "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
-
-- name: install the srpm of openonlaod
-  shell: rpm -ivh  "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
-
-- name: get the correct kernel-devel version from running kernel
-  shell: echo kernel-devel-`uname -r`
-  register: kernel_version
-
-- name: try to install the same kernel-devel version as running kernel
-  yum:
-    name: "{{ kernel_version.stdout }}"
-
-- name: create rpm of openonload
-  shell: rpmbuild -ba "{{ rpmbuild_specs }}/{{ onload_spec }}" > /tmp/rpm.log 2>&1
-  ignore_errors: true
-
+#- name: bugfix install git
+#  yum:
+#    name: git
+#
+#- name: get svt repo
+#  git:
+#    repo: https://{{ github_token }}@{{ svt_repo }}
+#    dest: /root/svt-private
+#
+#- name: prepare for building rpms
+#  yum:
+#    name: "{{ item }}"
+#  with_items:
+#    "{{ rpms_to_install }}"
+#
+#- name: create rpmbuild dir structure
+#  file:
+#    path: "{{ item }}"
+#    state: directory
+#  with_items:
+##    "{{ rpmbuild_directories }}"
+#
+#- name: create rpmmacros
+#  shell: echo '%_topdir %(echo $HOME)/rpmbuild' > /root/.rpmmacros
+#  args:
+#    creates: /root/rpmmacros
+#
+#- name: get sfnettest
+#  get_url:
+#    url:  "{{ onload_url }}/sfnettest/{{ sfnettest_version }}"
+#    dest: "{{ rpmbuild_sources }}/{{ sfnettest_version }}"
+#
+#- name: get sysjitter
+#  get_url:
+#    url: "{{ onload_url }}/sysjitter/{{ sysjitter_version }}"
+#    dest: "{{ rpmbuild_sources }}/{{ sysjitter_version }}"
+#
+#- name: get openonload
+#  copy:
+#    remote_src: true
+#    src:  "{{ solarflare_pkg_prefix }}/{{ onload_version }}"
+#    dest: "{{ rpmbuild_sources }}/{{ onload_version }}"
+#
+#
+#- name: create srpm of openonload
+#  shell: rpmbuild -ts "{{ rpmbuild_sources }}/{{ onload_version }}"
+#  args:
+#     creates: "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
+#
+#- name: install dependencies prior to building
+#  shell: yum-builddep -y "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
+#
+#- name: get the correct kernel-devel version from running kernel
+#  shell: echo kernel-devel-`uname -r`
+#  register: kernel_version
+#
+#- name: try to install the same kernel-devel version as running kernel
+#  yum:
+#    name: "{{ kernel_version.stdout }}"
+#
 #- name: create rpm of openonload
 #  shell: rpmbuild --rebuild "{{ rpmbuild_srpms }}/{{ onload_srpm }}"  > /tmp/rpm.log 2>&1
-#  args:
-#    creates:
-#       - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
-#       - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
+##  args:
+##    creates:
+##       - /root/rpmbuild/RPMS/x84_64/openonload-201710_u1-1.el7.centos.x86_64.rpm
+##       - /root/rpmbuild/RPMS/x84_64/openonload-kmod-3.10.0-693.el7-201710_u1-1.el7.centos.x86_64.rpm
 #  ignore_errors: True
 
 # - name: populate kernel drivers
