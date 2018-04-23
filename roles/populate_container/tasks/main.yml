@@ -51,9 +51,9 @@
 - name: install dependencies prior to building
   shell: yum-builddep -y "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
 
-- name: install the srpm of openonlaod
-  yum:
-    name: "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
+#- name: install the srpm of openonlaod
+#  yum:
+#    name: "{{ rpmbuild_srpms }}/{{ onload_srpm }}"
 
 - name: get the correct kernel-devel version from running kernel
   shell: echo kernel-devel-`uname -r`
