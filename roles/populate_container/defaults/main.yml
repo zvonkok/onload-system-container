@@ -30,6 +30,7 @@ rpms_to_install:
   - diffutils
   - patch
   - rpmdevtools
+  - hostname
 
 rpmbuild_sources: /root/rpmbuild/SOURCES
 rpmbuild_srpms:   /root/rpmbuild/SRPMS
