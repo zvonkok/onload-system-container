@@ -37,7 +37,7 @@
 - name: get sysjitter
   get_url:
     url: "{{ onload_url }}/sysjitter/{{ sysjitter_version }}"
-   dest: "{{ rpmbuild_sources }}/{{ sysjitter_version }}"
+    dest: "{{ rpmbuild_sources }}/{{ sysjitter_version }}"
 
 - name: get openonload
   copy:
